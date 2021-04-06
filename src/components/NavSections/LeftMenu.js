@@ -1,22 +1,21 @@
 import React from "react";
-import { Menu } from "antd";
-const { SubMenu } = Menu;
+import { Menu, Input } from "antd";
+import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
 
 function LeftMenu() {
   return (
     <Menu mode="horizontal">
       <Menu.Item>
-        <a href="/">Home</a>
+        <a href="/">
+          <HomeOutlined style={{ fontSize: "2rem", paddingTop: "1rem" }} />
+        </a>
       </Menu.Item>
-      <SubMenu title="Shop by Category">
-        <Menu.ItemGroup title="Clothing">
-          <Menu.Item>Earings</Menu.Item>
-          <Menu.Item>Shoes</Menu.Item>
-        </Menu.ItemGroup>
-      </SubMenu>
-      <Menu.Item>Shops</Menu.Item>
       <Menu.Item>
-        <a href="/product/add">Add</a>
+        <Input
+          placeholder="search.."
+          prefix={<SearchOutlined size="large" />}
+          style={{ borderRadius: "50px" }}
+        />
       </Menu.Item>
     </Menu>
   );

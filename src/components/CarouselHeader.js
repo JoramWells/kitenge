@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { Image, Row, Col, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Image, Row, Col, Button, Card } from "antd";
+import axios from "axios";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import a4 from "./img/a4.jpeg";
 import a2 from "./img/a2.jpeg";
 import a3 from "./img/a3.jpeg";
-import { listCategory, listProducts } from "../_actions/productActions";
+import { listCategory } from "../_actions/productActions";
 import { useDispatch, useSelector } from "react-redux";
-
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -32,8 +32,21 @@ const responsive = {
 export default function CarouselHeader() {
   const CategoryList = useSelector((state) => state.categoryLists);
 
-  const { products, loadingCategory, errorCategory } = CategoryList;
+  const { loading, posts, error } = CategoryList;
+  const [cats, setCat] = useState([]);
+  const [show, setShow] = useState(false);
+
+  // const categoryDetail = useSelector((state) => state.categoryList);
+  // const { posts, loading, error } = categoryDetail;
+
   const dispatch = useDispatch();
+
+  const fetchData = async (id) => {
+    const { data } = await axios.get("/category/" + id);
+    setCat(data);
+    setShow(true);
+    console.log(data);
+  };
 
   useEffect(() => {
     dispatch(listCategory());
@@ -46,10 +59,10 @@ export default function CarouselHeader() {
         align="middle"
         style={{ position: "sticky", top: "0px" }}
       >
-        {loadingCategory ? (
+        {loading ? (
           <div>Loading...</div>
-        ) : errorCategory ? (
-          <div>{errorCategory}</div>
+        ) : error ? (
+          <div>{error}</div>
         ) : (
           <Col md={12} sm={8} style={{ padding: "1rem" }}>
             <Carousel
@@ -61,13 +74,14 @@ export default function CarouselHeader() {
               renderButtonGroupOutside={true}
               arrows={false}
             >
-              {products.map((post) => (
+              {posts.map((post) => (
                 <Button
                   style={{
                     borderRadius: "50px",
                     backgroundColor: "whitesmoke",
                     border: "none",
                   }}
+                  onClick={() => fetchData(post.category)}
                 >
                   {post.category}
                 </Button>
@@ -77,7 +91,12 @@ export default function CarouselHeader() {
         )}
       </Row>
 
-      <Row justify="space-around" align="middle" style={{ margin: "2rem" }}>
+      <Row
+        justify="space-around"
+        align="middle"
+        hidden={show}
+        style={{ margin: "2rem" }}
+      >
         <Col>
           <Image src={a2} width="250px" height="auto" alt="ldsmdfkljfd" />
         </Col>
@@ -88,6 +107,24 @@ export default function CarouselHeader() {
           <Image src={a3} width="250px" height="auto" alt="ldsmdfkljfd" />
         </Col>
       </Row>
+      <Col>
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          responsive={responsive}
+          infinite={true}
+          autoPlay={true}
+          renderButtonGroupOutside={true}
+          arrows={false}
+        >
+          {cats.map((post) => (
+            <Card
+              style={{ width: "200px" }}
+              cover={<img alt="sjdksjdl" src={post.image} />}
+            ></Card>
+          ))}
+        </Carousel>
+      </Col>
     </>
   );
 }

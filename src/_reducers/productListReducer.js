@@ -44,14 +44,14 @@ function categoryListReducer(state = { products: [] }, action) {
       return state;
   }
 }
-function categoryListsReducer(state = { products: [] }, action) {
+function categoryListsReducer(state = { posts: [] }, action) {
   switch (action.type) {
     case PRODUCT_CATEGORY_REQUEST:
-      return { loadingCategory: true };
+      return { loading: true };
     case PRODUCT_CATEGORY_SUCCESS:
-      return { loadingCategory: false, products: action.payload };
+      return { loading: false, posts: action.payload };
     case PRODUCT_CATEGORY_FAIL:
-      return { loadingCategory: false, errorCategory: action.payload };
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import "./App.css";
-import { Spin } from "antd";
+import { Spin, Row, Col } from "antd";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Footer from "./components/Footer";
 import Top from "./components/Top";
@@ -20,31 +20,44 @@ const CartScreen = lazy(() => import("./components/CartScreen"));
 
 function App() {
   return (
-    <Suspense
-      fallback={
-        <div>
-          <Spin />
-        </div>
-      }
-    >
+    <>
       <Top />
-      <NavigationBar />
 
-      <Router>
-        <Switch>
-          <Route path="/" exact component={HomeRoutes} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/checkout" component={Checkout} />
-          <Route path="/product-detail/:id?" exact component={ProductDetail} />
-          <Route path="/products/add" exact component={AddProduct} />
-          <Route path="/cart/:id?" component={CartScreen} />
-          <Route path="/product/manage" exact component={ManageProducts} />
-        </Switch>
-      </Router>
-      <Footer />
-    </Suspense>
+      <Suspense
+        fallback={
+          <Row
+            justify="space-around"
+            align="middle"
+            style={{ padding: "15rem" }}
+          >
+            <Col>
+              <Spin size="large" tip="Loading data..." />
+            </Col>
+          </Row>
+        }
+      >
+        <NavigationBar />
+
+        <Router>
+          <Switch>
+            <Route path="/" exact component={HomeRoutes} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/checkout" component={Checkout} />
+            <Route
+              path="/product-detail/:id?"
+              exact
+              component={ProductDetail}
+            />
+            <Route path="/products/add" exact component={AddProduct} />
+            <Route path="/cart/:id?" component={CartScreen} />
+            <Route path="/product/manage" exact component={ManageProducts} />
+          </Switch>
+        </Router>
+        <Footer />
+      </Suspense>
+    </>
   );
 }
 

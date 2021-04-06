@@ -50,10 +50,10 @@
 .menu__mobile-button {
   float: right;
   height: 32px;
+  border: 0;
   padding: 6px;
   margin-top: 8px;
   display: none !important; /* use of important to overwrite ant-btn */
-  background: #3e91f7;
 }
 
 .menu_drawer .ant-drawer-body {
@@ -89,6 +89,10 @@
   }
 }
 
+.cart {
+  background-color: #fdba45;
+  border-radius: 5px;
+}
 .cart:hover {
-  background-color: #fda50f;
+  background-color: #a0a0a0;
 }

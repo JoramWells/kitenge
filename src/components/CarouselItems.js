@@ -1,13 +1,38 @@
 import React, { useEffect } from "react";
 import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../_actions/productActions";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Row, Col, Typography, Card, Skeleton, Form, Empty } from "antd";
 
 const { Text } = Typography;
 const { Meta } = Card;
+const posts = [1, 2, 3, 4, 5];
+const renderSkeleton = posts.map((post) => {
+  return (
+    <Col>
+      <Form layout="vertical">
+        <Form.Item>
+          <Skeleton.Input style={{ width: "200px", height: "150px" }} /> <br />
+        </Form.Item>
+
+        <Form.Item>
+          <Skeleton.Input
+            style={{ width: "150px", height: "1rem" }}
+            active={true}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Skeleton.Input
+            style={{ width: "200px", height: "1rem" }}
+            active={true}
+          />
+        </Form.Item>
+      </Form>
+    </Col>
+  );
+});
 
 const responsive = {
   superLargeDesktop: {
@@ -29,7 +54,7 @@ const responsive = {
   },
 };
 
-export default function CarouselItems(props) {
+export default function CarouselItems() {
   const dispatch = useDispatch();
   const ProductList = useSelector((state) => state.productList);
   const { posts, loading, error } = ProductList;
@@ -39,93 +64,10 @@ export default function CarouselItems(props) {
   }, []);
   console.log(posts);
   return (
-    <div style={{ padding: "50px" }}>
+    <div style={{ padding: "20px" }}>
       {loading ? (
-        <Row justify="space-between" align="middle">
-          <Col>
-            <Form layout="vertical">
-              <Form.Item>
-                <Skeleton.Input style={{ width: "200px", height: "150px" }} />{" "}
-                <br />
-              </Form.Item>
-
-              <Form.Item>
-                <Skeleton.Input
-                  style={{ width: "150px", height: "1rem" }}
-                  active={true}
-                />
-              </Form.Item>
-              <Form.Item>
-                <Skeleton.Input
-                  style={{ width: "200px", height: "1rem" }}
-                  active={true}
-                />
-              </Form.Item>
-            </Form>
-          </Col>
-          <Col>
-            <Form layout="vertical">
-              <Form.Item>
-                <Skeleton.Input style={{ width: "200px", height: "150px" }} />{" "}
-                <br />
-              </Form.Item>
-
-              <Form.Item>
-                <Skeleton.Input
-                  style={{ width: "150px", height: "1rem" }}
-                  active={true}
-                />
-              </Form.Item>
-              <Form.Item>
-                <Skeleton.Input
-                  style={{ width: "200px", height: "1rem" }}
-                  active={true}
-                />
-              </Form.Item>
-            </Form>
-          </Col>
-          <Col>
-            <Form layout="vertical">
-              <Form.Item>
-                <Skeleton.Input style={{ width: "200px", height: "150px" }} />{" "}
-                <br />
-              </Form.Item>
-
-              <Form.Item>
-                <Skeleton.Input
-                  style={{ width: "150px", height: "1rem" }}
-                  active={true}
-                />
-              </Form.Item>
-              <Form.Item>
-                <Skeleton.Input
-                  style={{ width: "200px", height: "1rem" }}
-                  active={true}
-                />
-              </Form.Item>
-            </Form>
-          </Col>
-          <Col>
-            <Form layout="vertical">
-              <Form.Item>
-                <Skeleton.Input style={{ width: "200px", height: "150px" }} />{" "}
-                <br />
-              </Form.Item>
-
-              <Form.Item>
-                <Skeleton.Input
-                  style={{ width: "150px", height: "1rem" }}
-                  active={true}
-                />
-              </Form.Item>
-              <Form.Item>
-                <Skeleton.Input
-                  style={{ width: "200px", height: "1rem" }}
-                  active={true}
-                />
-              </Form.Item>
-            </Form>
-          </Col>
+        <Row justify="space-around" align="middle">
+          {renderSkeleton}
         </Row>
       ) : error ? (
         <Empty
@@ -137,7 +79,7 @@ export default function CarouselItems(props) {
         ></Empty>
       ) : (
         <Carousel
-          swipeable={false}
+          swipeable={true}
           draggable={false}
           responsive={responsive}
           ssr={true} // means to render carousel on server-side.
@@ -154,10 +96,12 @@ export default function CarouselItems(props) {
                   <Card
                     style={{ height: "350px", border: "0" }}
                     cover={
-                      <img
+                      <LazyLoadImage
                         src={item.image}
+                        effect="blur"
                         alt="productimage"
                         style={{ width: "200px", height: "inherit" }}
+                        // visibleByDefault={item.image}
                       />
                     }
                   >

@@ -1,18 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import store from './store'
-import {Provider} from 'react-redux'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import store from "./store";
+import "./NavBar.css";
+import { Provider } from "react-redux";
+import "react-multi-carousel/lib/styles.css";
+
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 ReactDOM.hydrate(
   <React.StrictMode>
     <Provider store={store}>
-    <App />
+      <App />
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

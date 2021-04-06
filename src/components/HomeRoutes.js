@@ -2,6 +2,7 @@ import React from "react";
 import CarouselItems from "./CarouselItems";
 import RecentItemsBar from "./RecentItemsBar";
 import CarouselHeader from "./CarouselHeader";
+import { LazyLoadComponent } from "react-lazy-load-image-component";
 
 export default function HomeRoutes() {
   return (
@@ -9,8 +10,10 @@ export default function HomeRoutes() {
       <CarouselHeader />
       <RecentItemsBar title="Recent products" />
       <CarouselItems />
-      <RecentItemsBar title="Trending Products" />
-      <CarouselItems />
+      <LazyLoadComponent>
+        <RecentItemsBar title="Trending Products" />
+        <CarouselItems />
+      </LazyLoadComponent>
     </div>
   );
 }

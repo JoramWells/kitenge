@@ -1,14 +1,47 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
-import { Menu, Badge, Space } from "antd";
-import { NotificationOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { Menu, Space, Badge, Modal, Col, Row, Typography, Image } from "antd";
+import Cookie from "js-cookie";
+import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
+const { Text, Title } = Typography;
 const { SubMenu } = Menu;
+const cartItems = Cookie.getJSON("cartItems");
+console.log(cartItems);
+const renderItems = cartItems.map((product) => {
+  return (
+    <Row justify="space-around" align="middle">
+      <Col>
+        <Image
+          src={product.image}
+          alt="kldjfkldsjfl"
+          style={{ width: "50px" }}
+        />
+      </Col>
+      <Col>
+        <Title level={3}>{product.qty}</Title>
+      </Col>
+      <Col key={product.product}>
+        <Text>{product.price}</Text>
+      </Col>
+    </Row>
+  );
+});
 
-function RightMenu(props) {
+function RightMenu() {
   const userSignin = useSelector((state) => state.userSignin);
-  const { loading, userInfo, error } = userSignin;
+  const { userInfo } = userSignin;
+  const [visible, setVisible] = useState(false);
+  const showModal = () => {
+    setVisible(true);
+  };
+  const handleOk = () => {
+    setVisible(false);
+  };
+  const handleCancel = () => {
+    setVisible(false);
+  };
 
   if (!userInfo) {
     return (
@@ -25,8 +58,15 @@ function RightMenu(props) {
     return (
       <Space>
         <Menu mode="horizontal">
-          <Menu.Item key="logout"></Menu.Item>
-          <SubMenu title={userInfo.name}>
+          <Menu.Item>
+            <Badge count={cartItems.length}>
+              <ShoppingCartOutlined
+                onClick={showModal}
+                style={{ fontSize: "2rem", fontWeight: "bold" }}
+              />
+            </Badge>
+          </Menu.Item>
+          <SubMenu title={<UserOutlined style={{ fontSize: "2rem" }} />}>
             <Menu.Item style={{ paddingLeft: "85px", margin: "auto" }}>
               <img
                 src={userInfo.avatar}
@@ -36,14 +76,15 @@ function RightMenu(props) {
             </Menu.Item>
             <Menu.Item>{userInfo.email}</Menu.Item>
           </SubMenu>
-          <Menu.Item>
-            <Badge dot>
-              <a href="#" className="head-example">
-                cart
-              </a>
-            </Badge>
-          </Menu.Item>
         </Menu>
+        <Modal
+          title="Basic Modal"
+          visible={visible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          {renderItems}
+        </Modal>
       </Space>
     );
   }

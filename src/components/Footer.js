@@ -1,8 +1,7 @@
 import React from "react";
-import { Row, Col, Typography, Space, Form, Input, Button } from "antd";
+import { Row, Col, Typography, Space } from "antd";
 import mpesa from "./img/mpesa.png";
 import {
-  PhoneOutlined,
   TwitterOutlined,
   FacebookOutlined,
   InstagramOutlined,
@@ -13,32 +12,17 @@ const { Title, Text } = Typography;
 export default function Footer() {
   return (
     <>
-      <Col
-        style={{ height: "200px", padding: "2rem", backgroundColor: "#F5F5F5" }}
-      >
-        <h2>Subcribe to our newsletter</h2>
-        <Form>
-          <Form.Item>
-            <Input />
-          </Form.Item>
-        </Form>
-        <Form.Item>
-          <Button type="primary">Submit</Button>
-        </Form.Item>
-      </Col>
       <Row
-        md={8}
-        sm={8}
-        justify="center"
+        justify="space-around"
         align="middle"
         style={{
-          height: "250px",
-          padding: "20px",
+          height: "350px",
+          padding: "2rem",
           backgroundColor: "rgb(40,44,53)",
           color: "white",
         }}
       >
-        <Col span={6}>
+        <Col>
           <Title level={4} style={{ color: "white" }}>
             Social media
           </Title>
@@ -49,7 +33,7 @@ export default function Footer() {
             <InstagramOutlined style={{ fontSize: "2rem", color: "#ff8533" }} />{" "}
           </Space>
         </Col>
-        <Col span={6}>
+        <Col>
           <Title level={4} style={{ color: "white" }}>
             Buy
           </Title>
@@ -63,7 +47,7 @@ export default function Footer() {
           <br />
           <Text style={{ color: "white" }}>Contact us</Text>
         </Col>
-        <Col span={6}>
+        <Col>
           <Title level={4} style={{ color: "white" }}>
             Sell
           </Title>
@@ -77,11 +61,11 @@ export default function Footer() {
           <br />
           <Text style={{ color: "white" }}>Login</Text>
         </Col>
-        <Col span={6}>
-          <Title level={4} style={{ color: "white" }}>
+        <Col>
+          <Title level={4} style={{ color: "white", textAlign: "center" }}>
             Payments
           </Title>
-          <img src={mpesa} alt="dkjskaljdklas" width="200px" />
+          <img src={mpesa} alt="dkjskaljdklas" width="180px" />
         </Col>
       </Row>
       <div

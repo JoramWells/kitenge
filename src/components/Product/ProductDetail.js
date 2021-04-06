@@ -10,10 +10,13 @@ import {
   Image,
   Skeleton,
   Form,
+  Empty,
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import Carousel from "react-multi-carousel";
 import { categoryProduct, detailsProduct } from "../../_actions/productActions";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+
 import RecentItemsBar from "../RecentItemsBar";
 const { Meta } = Card;
 const responsive = {
@@ -61,7 +64,7 @@ export default function ProductDetail(props) {
   console.log(products);
 
   return (
-    <>
+    <Col style={{ padding: "20px" }}>
       {loading ? (
         <Row justify="space-around" align="middle" style={{ padding: "2rem" }}>
           <Col>
@@ -92,7 +95,7 @@ export default function ProductDetail(props) {
             <Image
               src={product.image}
               alt="shoes again"
-              style={{ width: "250px" }}
+              style={{ width: "300px" }}
             />
           </Col>
 
@@ -102,12 +105,29 @@ export default function ProductDetail(props) {
 
             <Title level={5}>
               <Divider plain></Divider>
-              Ksh: {product.price}
+              Price: ksh{" "}
+              <span style={{ color: "#CD5C5C" }}>{product.price}</span>
             </Title>
             <Title level={5}>
               Sold By:
               <span style={{ color: "#588BAE" }}> {product.shop}</span>
             </Title>
+            <Title level={5}>Categorys': {product.category}</Title>
+            <Title level={5}>Qty: </Title>
+            <select
+              defaultValue={qty}
+              style={{ width: 120 }}
+              onChange={(e) => {
+                setQty(e.target.value);
+              }}
+            >
+              {[...Array(product.stock).keys()].map((x) => (
+                <option key={x + 1} value={x + 1}>
+                  {x + 1}
+                </option>
+              ))}
+            </select>
+
             <Divider plain></Divider>
             {product.stock > 0 ? (
               <Row justify="space-around">
@@ -131,84 +151,70 @@ export default function ProductDetail(props) {
             )}
 
             <Divider plain></Divider>
-            <Title level={4}>Categories: </Title>
-            <Text>{product.categories}</Text>
           </Col>
           <Col xs={24} md={8}>
             <Card style={{ border: "none" }}>
-              <Text level={3}>
-                Paid delivery, free delivery on Wednesdays, Fridays{" "}
-              </Text>
-
-              <Title level={5}>Coupouns</Title>
-
-              <Text>Qty: </Text>
-              <select
-                defaultValue={qty}
-                style={{ width: 120 }}
-                onChange={(e) => {
-                  setQty(e.target.value);
-                }}
-              >
-                {[...Array(product.stock).keys()].map((x) => (
-                  <option key={x + 1} value={x + 1}>
-                    {x + 1}
-                  </option>
-                ))}
-              </select>
+              <Title level={3}>Description</Title>
+              <Text>{product.description}</Text>
             </Card>
           </Col>
-          <Row justify="space-around" align="middle">
-            <Col>
-              <Title level={4}>Description</Title>
-              <Text>{product.description}</Text>
-            </Col>
-          </Row>
         </Row>
       )}
       <RecentItemsBar title="Related Items" />
       {loadingCategory ? (
         <div>Loading..</div>
-      ) : error ? (
+      ) : errorCategory ? (
         <div>{errorCategory}</div>
       ) : (
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          responsive={responsive}
-          ssr={true} // means to render carousel on server-side.
-          infinite={true}
-          autoPlay={true}
-        >
-          {products.map((item) => (
-            <Row>
-              <Col item key={item.id}>
-                <a
-                  href={`/product-detail/${item.id}/?category=${item.category}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <Card
-                    style={{ height: "350px", border: "0" }}
-                    cover={
-                      <img
-                        src={item.image}
-                        alt="productimage"
-                        style={{ maxWidth: "75%", height: "180px" }}
-                      />
-                    }
-                  >
-                    <Meta title={item.product_name} description={item.shop} />
+        <div>
+          <Carousel
+            swipeable={false}
+            draggable={false}
+            responsive={responsive}
+            infinite={true}
+            autoPlay={true}
+          >
+            {products.length === 0 ? (
+              <Row justify="space-around" align="middle">
+                <Col>
+                  <Empty description="No category"></Empty>
+                </Col>
+              </Row>
+            ) : (
+              products.map((item) => (
+                <Row justify="space-around" align="middle">
+                  <Col item key={item.id}>
+                    <a
+                      href={`/product-detail/${item.id}/?category=${item.category}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Card
+                        style={{ height: "350px", border: "0" }}
+                        cover={
+                          <LazyLoadImage
+                            src={item.image}
+                            alt="productimage"
+                            style={{
+                              width: "200px",
+                            }}
+                          />
+                        }
+                      >
+                        <Meta
+                          title={item.product_name}
+                          description={item.shop}
+                        />
 
-                    {/* <Rate name="size-small" defaultValue={item.ratings} /> */}
-
-                    <Text level={3}>ksh {item.price}</Text>
-                  </Card>
-                </a>
-              </Col>
-            </Row>
-          ))}
-        </Carousel>
+                        <Text level={3}>ksh {item.price}</Text>
+                      </Card>
+                    </a>
+                  </Col>
+                </Row>
+              ))
+            )}
+          </Carousel>
+        </div>
       )}
-    </>
+    </Col>
   );
 }

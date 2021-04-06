@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LeftMenu from "./NavSections/LeftMenu";
 import RightMenu from "./NavSections/RightMenu";
 import { Drawer, Button } from "antd";
-import "./NavBar.css";
+import { MenuOutlined } from "@ant-design/icons";
 
 function NavigationBar() {
   const [visible, setVisible] = useState(false);
@@ -30,15 +30,17 @@ function NavigationBar() {
           <div className="menu_left">
             <LeftMenu mode="horizontal" />
           </div>
+
           <div className="menu_rigth">
             <RightMenu mode="horizontal" />
           </div>
           <Button
+            size="large"
+            type="secondary"
             className="menu__mobile-button"
-            type="primary"
             onClick={showDrawer}
           >
-            {/* <Icon type="align-right" /> */}
+            <MenuOutlined style={{ fontSize: "1.5rem" }} />
           </Button>
           <Drawer
             title="Basic Drawer"

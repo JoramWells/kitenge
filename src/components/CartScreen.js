@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { addToCart } from "../_actions/cartActions";
+import { addToCart, removeFromCart } from "../_actions/cartActions";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "antd";
 
@@ -12,6 +12,9 @@ export default function CartScreen(props) {
   const { cartItems } = cart;
   const dispatch = useDispatch();
   console.log(productId, qty);
+  const removeFromCartHandler = (productId) => {
+    dispatch(removeFromCart(productId));
+  };
 
   useEffect(() => {
     if (productId) {
@@ -25,7 +28,7 @@ export default function CartScreen(props) {
         <div>Cart is empty</div>
       ) : (
         cartItems.map((item) => (
-          <div>
+          <div key={item.image}>
             <img
               src={item.image}
               alt="lkfjdklsfjkl"
@@ -33,6 +36,9 @@ export default function CartScreen(props) {
             />
             Qty:{item.qty}
             <br />
+            <Button onClick={() => removeFromCartHandler(item.product)}>
+              Delete
+            </Button>
           </div>
         ))
       )}

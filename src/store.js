@@ -16,8 +16,9 @@ import {
 import Cookie from "js-cookie";
 import { cartReducer } from "./_reducers/cartReducers";
 
+const cartItems = Cookie.getJSON("cartItems") || [];
 const userInfo = Cookie.getJSON("userInfo") || null;
-const initialState = { userSignin: { userInfo } };
+const initialState = { cart: { cartItems }, userSignin: { userInfo } };
 
 const reducer = combineReducers({
   productList: productListReducer,
